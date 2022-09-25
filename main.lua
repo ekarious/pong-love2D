@@ -3,9 +3,11 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
     require("lldebugger").start()
 end
 
+love.window.setMode(1024, 720, { centered = true, resizable = false })
+
 -- Paddle
 Pad = {}
-Pad.x = 0
+Pad.x = 10
 Pad.y = 0
 Pad.width = 20
 Pad.height = 80
@@ -34,7 +36,11 @@ function ResetBallSpeedAndDirection()
 end
 
 function love.load()
+    -- Center Ball on screen
     CenterBallInScreen()
+
+    -- Center Paddle on Screen (vertically)
+    Pad.y = (love.graphics.getHeight() / 2) - (Pad.height / 2)
 end
 
 function love.update(dt)
