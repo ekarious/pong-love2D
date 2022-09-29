@@ -3,86 +3,60 @@ if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
     require("lldebugger").start()
 end
 
+-- Set some Love2D options
 love.window.setMode(1024, 720, { centered = true, resizable = false })
 
--- Paddle
-Pad = {}
-Pad.x = 10
-Pad.y = 0
-Pad.width = 20
-Pad.height = 80
+-- Import Module for the game
+local Paddle = require('paddle')
+local Ball = require('ball')
 
--- Ball
-Ball = {}
-Ball.x = 0
-Ball.y = 0
-Ball.width = 20
-Ball.height = 20
-Ball.speed_x = 2
-Ball.speed_y = 2
-
-function CenterBallInScreen()
-    -- Center the ball
-    Ball.x = love.graphics.getWidth() / 2
-    Ball.x = Ball.x - Ball.width / 2
-
-    Ball.y = love.graphics.getHeight() / 2
-    Ball.y = Ball.y - Ball.height / 2
-end
-
-function ResetBallSpeedAndDirection()
-    Ball.speed_x = 2
-    Ball.speed_y = 2
-end
+-- Instanciate objects
+local pad_player1 = Paddle:new(10)
+local pad_player2 = Paddle:new(love.graphics.getWidth() - Paddle.width - 10)
+local ball = Ball:new()
 
 function love.load()
     -- Center Ball on screen
-    CenterBallInScreen()
+    ball:CenterOnScreen()
 
     -- Center Paddle on Screen (vertically)
-    Pad.y = (love.graphics.getHeight() / 2) - (Pad.height / 2)
+    pad_player1:CenterVeritcally()
+    pad_player2:CenterVeritcally()
 end
 
 function love.update(dt)
     -- Ball animation
-    if Ball.x < 0 then
-        -- Ball.speed_x = Ball.speed_x * -1
-        -- Lost !
-        CenterBallInScreen()
-        ResetBallSpeedAndDirection()
-    end
-    if Ball.y < 0 then
-        Ball.speed_y = Ball.speed_y * -1
-    end
-    if Ball.x > love.graphics.getWidth() - Ball.width then
-        Ball.speed_x = Ball.speed_x * -1
-        -- Lost
-    end
-    if Ball.y > love.graphics.getHeight() - Ball.height then
-        Ball.speed_y = Ball.speed_y * -1
-    end
-    Ball.x = Ball.x + Ball.speed_x
-    Ball.y = Ball.y + Ball.speed_y
+    ball:Animation()
 
     -- If ball contact with Paddle
-    if Ball.x <= Pad.x + Pad.width then
-        if Ball.y + Ball.height > Pad.y and Ball.y < Pad.y + Pad.height then
-            Ball.speed_x = Ball.speed_x * -1 -- invert direction
-            Ball.x = Pad.x + Pad.width
+    if ball.x <= pad_player1.x + pad_player1.width then
+        if ball.y + ball.height > pad_player1.y and ball.y < pad_player1.y + pad_player1.height then
+            ball.speed_x = ball.speed_x * -1 -- invert direction
+            ball.x = pad_player1.x + pad_player1.width
         end
     end
 
-
-    if love.keyboard.isDown("down") and love.graphics.getHeight() > (Pad.y + Pad.height) then
-        Pad.y = Pad.y + 2
+    --  Player 1 Movement
+    if love.keyboard.isDown("s") and love.graphics.getHeight() > (pad_player1.y + pad_player1.height) then
+        pad_player1.y = pad_player1.y + pad_player1.move_speed
     end
 
-    if love.keyboard.isDown("up") and Pad.y > 0 then
-        Pad.y = Pad.y - 2
+    if love.keyboard.isDown("w") and pad_player1.y > 0 then
+        pad_player1.y = pad_player1.y - pad_player1.move_speed
+    end
+
+    --  Player 2 Movement
+    if love.keyboard.isDown("down") and love.graphics.getHeight() > (pad_player2.y + pad_player2.height) then
+        pad_player2.y = pad_player2.y + pad_player2.move_speed
+    end
+
+    if love.keyboard.isDown("up") and pad_player2.y > 0 then
+        pad_player2.y = pad_player2.y - pad_player2.move_speed
     end
 end
 
 function love.draw()
-    love.graphics.rectangle("fill", Pad.x, Pad.y, Pad.width, Pad.height)
-    love.graphics.rectangle("fill", Ball.x, Ball.y, Ball.width, Ball.height)
+    love.graphics.rectangle("fill", pad_player1.x, pad_player1.y, pad_player1.width, pad_player1.height)
+    love.graphics.rectangle("fill", pad_player2.x, pad_player2.y, pad_player2.width, pad_player2.height)
+    love.graphics.rectangle("fill", ball.x, ball.y, ball.width, ball.height)
 end
