@@ -15,26 +15,19 @@ local pad_player1 = Paddle:new(10)
 local pad_player2 = Paddle:new(love.graphics.getWidth() - Paddle.width - 10)
 local ball = Ball:new()
 
+-- Love2D functions
 function love.load()
-    -- Center Ball on screen
     ball:CenterOnScreen()
 
-    -- Center Paddle on Screen (vertically)
     pad_player1:CenterVeritcally()
     pad_player2:CenterVeritcally()
 end
 
 function love.update(dt)
-    -- Ball animation
     ball:Animation()
 
     -- If ball contact with Paddle
-    if ball.x <= pad_player1.x + pad_player1.width then
-        if ball.y + ball.height > pad_player1.y and ball.y < pad_player1.y + pad_player1.height then
-            ball.speed_x = ball.speed_x * -1 -- invert direction
-            ball.x = pad_player1.x + pad_player1.width
-        end
-    end
+    ball:PaddleCollision(pad_player1) -- FIX
 
     --  Player 1 Movement
     if love.keyboard.isDown("s") and love.graphics.getHeight() > (pad_player1.y + pad_player1.height) then
@@ -56,7 +49,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.rectangle("fill", pad_player1.x, pad_player1.y, pad_player1.width, pad_player1.height)
-    love.graphics.rectangle("fill", pad_player2.x, pad_player2.y, pad_player2.width, pad_player2.height)
-    love.graphics.rectangle("fill", ball.x, ball.y, ball.width, ball.height)
+    pad_player1:draw()
+    pad_player2:draw()
+    ball:draw()
 end

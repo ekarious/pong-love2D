@@ -34,6 +34,19 @@ function Ball:Animation()
     self.y = self.y + self.speed_y
 end
 
+function Ball:PaddleCollision(paddle)
+    if self.x <= paddle.x + paddle.width then
+        if self.y + self.height > paddle.y and self.y < paddle.y + paddle.height then
+            self.speed_x = self.speed_x * -1 -- invert direction
+            self.x = paddle.x + paddle.width
+        end
+    end
+end
+
+function Ball:draw()
+    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+end
+
 -- Generate a new "instance"
 function Ball:new(x, y, width, height, speed_x, speed_y)
     local o = {}

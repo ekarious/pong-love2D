@@ -5,6 +5,10 @@ function Paddle:CenterVeritcally()
     self.y = (love.graphics.getHeight() / 2) - (self.height / 2)
 end
 
+function Paddle:draw()
+    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+end
+
 -- Generate a new "instance"
 function Paddle:new(x, y, width, height, move_speed)
     local o = {}
