@@ -1,5 +1,5 @@
 -- Metaclass
-Ball = { x = 0, y = 0, width = 20, height = 20, speed_x = 2, speed_y = 2 }
+Ball = { x = 0, y = 0, width = 20, height = 20, speed_x = 4, speed_y = 4 }
 
 function Ball:CenterOnScreen()
     self.x = love.graphics.getWidth() / 2
@@ -10,8 +10,8 @@ function Ball:CenterOnScreen()
 end
 
 function Ball:ResetSpeedAndDirection()
-    self.speed_x = 2
-    self.speed_y = 2
+    self.speed_x = -4
+    self.speed_y = 4
 end
 
 function Ball:Animation()
@@ -30,17 +30,9 @@ function Ball:Animation()
     if self.y > love.graphics.getHeight() - self.height then
         self.speed_y = self.speed_y * -1
     end
+
     self.x = self.x + self.speed_x
     self.y = self.y + self.speed_y
-end
-
-function Ball:PaddleCollision(paddle)
-    if self.x <= paddle.x + paddle.width then
-        if self.y + self.height > paddle.y and self.y < paddle.y + paddle.height then
-            self.speed_x = self.speed_x * -1 -- invert direction
-            self.x = paddle.x + paddle.width
-        end
-    end
 end
 
 function Ball:draw()
