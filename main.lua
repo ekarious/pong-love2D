@@ -27,7 +27,7 @@ function love.update(dt)
     ball:Animation()
 
     -- If ball contact with Paddle
-    ball:PaddleCollision(pad_player1) -- FIX
+    ball:PaddleCollision(pad_player1) -- FIX collision with paddle player 2
 
     --  Player 1 Movement
     if love.keyboard.isDown("s") and love.graphics.getHeight() > (pad_player1.y + pad_player1.height) then
