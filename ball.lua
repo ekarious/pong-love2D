@@ -1,3 +1,5 @@
+local Interface = require('interface')
+
 -- Metaclass
 Ball = { x = 0, y = 0, width = 20, height = 20, speed_x = 200, speed_y = 200 }
 
@@ -16,6 +18,7 @@ end
 
 function Ball:Animation(dt)
     if self.x < 0 then
+        Interface:UpdateScore("player2", Interface.score.player2 + 1)
         self:CenterOnScreen()
         self:ResetSpeedAndDirection(dt)
     end
@@ -23,7 +26,7 @@ function Ball:Animation(dt)
         self.speed_y = (self.speed_y + dt) * -1
     end
     if self.x > love.graphics.getWidth() - self.width then
-        -- self.speed_x = self.speed_x * -1
+        Interface:UpdateScore("player1", Interface.score.player1 + 1)
         self:CenterOnScreen()
         self:ResetSpeedAndDirection(dt)
     end

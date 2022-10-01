@@ -17,7 +17,6 @@ local pad_player1 = Paddle:new(10)
 local pad_player2 = Paddle:new(love.graphics.getWidth() - Paddle.width - 10)
 local ball = Ball:new()
 
-
 -- Love2D functions
 function love.load()
     ball:CenterOnScreen()
