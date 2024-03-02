@@ -1,5 +1,8 @@
-☐ Ajouter collision Player 2 @done
-☐ Ajouter ligne de separation  @done
-☐ Ajouter Gameplay
-    ☐ Ajouter score @done
-    ☐ Ajouter Win / Lose
+- Add sounds
+- Add mouse movement
+- Add paddle rebound change based on where the ball collide and the movement of the paddle at the time is doing.
+- Add an AI
+
+## Rules to implement
+
+The first player to reach 11 points wins that game, however a game must be won by at least a two point margin.

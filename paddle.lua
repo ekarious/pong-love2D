@@ -1,5 +1,7 @@
+SOUND_BOUNCE_PADDLE = love.audio.newSource('sounds/bounce_paddle.wav', "static");
+
 -- Metaclass
-Paddle = { x = 10, y = 0, width = 20, height = 80, move_speed = 300 }
+Paddle = { x = 10, y = 0, width = 15, height = 80, move_speed = 300 }
 
 function Paddle:CenterVeritcally()
     self.y = (love.graphics.getHeight() / 2) - (self.height / 2)
@@ -12,11 +14,18 @@ end
 function Paddle:BallCollision(ball)
     if ball.x + ball.width >= self.x and ball.x <= self.x + self.width then
         if ball.y + ball.height >= self.y and ball.y <= self.y + self.height then
-            ball.speed_x = ball.speed_x * -1 -- invert direction
+            ball.moveVector[1] = ball.moveVector[1] * -1 -- invert direction
+
+            love.audio.play(SOUND_BOUNCE_PADDLE)
+
             if self.x >= love.graphics.getWidth() / 2 then
                 ball.x = self.x - ball.width
             else
                 ball.x = self.x + ball.width
+            end
+
+            if ball.speed > 1000 then
+                ball.speed = 1000
             end
         end
     end

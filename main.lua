@@ -1,11 +1,9 @@
--- Debugger
-if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
-    require("lldebugger").start()
-end
+PAUSED = false
+FIRST_CLICK = false
 
 -- Set some Love2D options
-love.window.setMode(1024, 720, { centered = true, resizable = false })
 love.graphics.setLineWidth(1)
+love.audio.setVolume(0.1)
 
 -- Import Module for the game
 local Paddle = require('paddle')
@@ -26,6 +24,8 @@ function love.load()
 end
 
 function love.update(dt)
+    if PAUSED then return end
+
     -- If ball contact with Paddle
     pad_player1:BallCollision(ball)
     pad_player2:BallCollision(ball)
@@ -52,6 +52,13 @@ function love.update(dt)
 end
 
 function love.draw()
+    if PAUSED then
+        love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
+        local font = love.graphics.newFont(48)
+        local gamePaused = love.graphics.newText(font, "Game Paused")
+        love.graphics.draw(gamePaused, love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
+    end
+
     love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
     pad_player1:draw()
     pad_player2:draw()
@@ -60,4 +67,15 @@ function love.draw()
     love.graphics.setColor(love.math.colorFromBytes(100, 101, 99))
     Interface:SideSeparator()
     Interface:CreateScore()
+end
+
+function love.keypressed(key, unicode)
+    if key == "escape" or key == 'p' then
+        PAUSED = not PAUSED
+    end
+
+    --Debug
+    if key == "rctrl" then
+        debug.debug()
+    end
 end

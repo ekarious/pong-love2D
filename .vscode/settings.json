@@ -1,5 +1,7 @@
 {
-  "Lua.runtime.version": "LuaJIT",
   "Lua.workspace.library": ["${3rd}/love2d/library"],
-  "Lua.workspace.checkThirdParty": false
+  "Lua.workspace.checkThirdParty": false,
+  "files.associations": {
+    "**/*.lua": "lua"
+  }
 }
